@@ -1,37 +1,17 @@
-import { Dispatch } from 'react';
-import { ITransaction, getTransactions } from '../../ApiClient';
-import { StyledCard } from './Card.styled';
-import _ from 'lodash';
-import { UserData } from '../../pages/CardsDashboard';
+import { StyledCard } from '../styles/Card.styled';
+import { useTransactions } from '../../context/TransactionContext';
+
 type CardProps = {
   id: string;
   description: string;
-  userData: UserData;
-  setUserData: Dispatch<React.SetStateAction<UserData>>;
 };
-function Card({ id, description, userData, setUserData }: CardProps) {
-  const variant = description === 'Private Card' ? 'private' : 'business';
 
-  const getCardTransactions = async (cardId: string) => {
-    try {
-      const transactionDetails: ITransaction[] = await getTransactions(cardId);
-      if (
-        !transactionDetails.length ||
-        _.isEqual(userData.transactions, transactionDetails)
-      ) {
-        return;
-      }
-      setUserData({
-        ...userData,
-        transactions: transactionDetails,
-        activeCard: { description, id },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+function Card({ id, description }: CardProps) {
+  const variant = description === 'Private Card' ? 'private' : 'business';
+  const { setSelectedCard } = useTransactions();
+
   const handleClick = () => {
-    getCardTransactions(id);
+    setSelectedCard(id);
   };
 
   return (

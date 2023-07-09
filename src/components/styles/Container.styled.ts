@@ -2,24 +2,22 @@ import styled from 'styled-components';
 
 interface ContainerProps {
   size: 'small' | 'medium' | 'large';
-  align: 'start' | 'center';
+  align: 'start' | 'center' | 'space-between';
+  gap: string;
 }
 
 export const StyledContainer = styled.div<ContainerProps>`
   width: 100%;
-  margin: 1rem auto;
   display: flex;
+  gap: ${({ gap }) => gap}rem;
   flex-wrap: wrap;
-  justify-content: ${({ align }) =>
-    align === 'start' ? 'start' : 'space-between'};
+  justify-content: ${({ align }) => align};
   align-items: center;
   ${({ size }) =>
     size === 'medium' &&
     `
   max-width: 60%;
   @media (max-width: 850px) {
-    gap:2rem;
-    justify-content:center
-  }
+    justify-content:center  }
 `};
 `;

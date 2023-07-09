@@ -1,20 +1,21 @@
-import { ICard } from '../../ApiClient';
-import { StyledTransaction } from './Transaction.styled';
+import { useTransactions } from '../../context/TransactionContext';
+import { StyledTransaction } from '../styles/Transaction.styled';
+
 type TransactionProps = {
   amount: number;
   description: string;
-  activeCard: ICard;
 };
 
-function Transaction({ amount, description, activeCard }: TransactionProps) {
+function Transaction({ amount, description }: TransactionProps) {
+  const { selectedCard } = useTransactions();
   const variant =
-    activeCard.description === 'Private Card' ? 'private' : 'business';
-  const moneyFormat = amount.toString().replace('.', ',');
+    selectedCard.description === 'Private Card' ? 'private' : 'business';
+  const formattedAmount = amount.toString().replace('.', ',');
 
   return (
     <StyledTransaction variant={variant}>
       <p>{description}</p>
-      <p>{moneyFormat}€</p>
+      <p>{formattedAmount}€</p>
     </StyledTransaction>
   );
 }

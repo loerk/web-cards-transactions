@@ -1,27 +1,14 @@
-import { ICard } from '../../ApiClient';
 import { StyledContainer } from '../styles/Container.styled';
-import _ from 'lodash';
+import { useTransactions } from '../../context/TransactionContext';
 import Card from '../card/Card';
-import { Dispatch } from 'react';
-import { UserData } from '../../pages/CardsDashboard';
 
-type CardProps = {
-  userData: UserData;
-  setUserData: Dispatch<React.SetStateAction<UserData>>;
-};
+function Cards() {
+  const { cards } = useTransactions();
 
-function Cards({ setUserData, userData }: CardProps) {
-  const { cards } = userData;
   return (
-    <StyledContainer align='center' size='medium'>
+    <StyledContainer align='space-between' size='medium' gap='2'>
       {cards?.map((card) => (
-        <Card
-          key={card.id}
-          id={card.id}
-          description={card.description}
-          setUserData={setUserData}
-          userData={userData}
-        />
+        <Card key={card.id} id={card.id} description={card.description} />
       ))}
     </StyledContainer>
   );

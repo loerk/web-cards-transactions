@@ -1,46 +1,49 @@
-import Transaction from '../transaction/Transaction';
-import { UserData } from '../../pages/CardsDashboard';
-import Filter from '../filter/Filter';
 import { useState } from 'react';
-import { StyledTransactions } from './Transactions.styled';
 
-type TransactionProps = {
-  userData: UserData;
-};
-function Transactions({ userData }: TransactionProps) {
+import { StyledContainer } from '../styles/Container.styled';
+import { StyledTransactions } from '../styles/Transactions.styled';
+import { useTransactions } from '../../context/TransactionContext';
+import Transaction from '../transaction/Transaction';
+import Filter from '../filter/Filter';
+
+function Transactions() {
   const [amountFilter, setAmountFilter] = useState('');
+
+  const { transactions, selectedCard } = useTransactions();
+
+  if (!selectedCard.id) {
+    return (
+      <StyledContainer align='center' gap='2' size='medium'>
+        <p>Please select a card</p>
+      </StyledContainer>
+    );
+  }
   return (
-    <StyledTransactions align='center' size='medium'>
+    <StyledContainer gap='2' align='center' size='medium'>
       <Filter setAmountFilter={setAmountFilter} />
-      {!amountFilter &&
-        userData.transactions.map((transaction) => {
-          return (
-            <Transaction
-              key={transaction.id}
-              activeCard={userData.activeCard}
-              amount={transaction.amount}
-              description={transaction.description}
-            ></Transaction>
-          );
-        })}
-      {amountFilter &&
-        userData.transactions.map((transaction) => {
-          if (
-            transaction.amount
-              .toString()
-              .startsWith(amountFilter.replace(',', '.'))
-          ) {
+      <StyledTransactions gap='2' align='center' size='large'>
+        {!amountFilter &&
+          transactions.map((transaction) => {
+            const { id, amount, description } = transaction;
             return (
-              <Transaction
-                key={transaction.id}
-                activeCard={userData.activeCard}
-                amount={transaction.amount}
-                description={transaction.description}
-              ></Transaction>
+              <Transaction key={id} amount={amount} description={description} />
             );
-          }
-        })}
-    </StyledTransactions>
+          })}
+        {amountFilter &&
+          transactions.map((transaction) => {
+            const { id, amount, description } = transaction;
+            if (amount.toString().startsWith(amountFilter.replace(',', '.'))) {
+              return (
+                <Transaction
+                  key={id}
+                  amount={amount}
+                  description={description}
+                />
+              );
+            }
+          })}
+      </StyledTransactions>
+    </StyledContainer>
   );
 }
 

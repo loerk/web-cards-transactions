@@ -6,20 +6,22 @@ interface CardProps {
 }
 
 export const StyledCard = styled.button<CardProps>`
-  border-radius: 15px;
-  min-width: 250px;
-  padding: 1rem;
+  min-width: 14rem;
+  height: 8rem;
+  padding-top: 0.3rem;
+  padding-left: 2rem;
+  font-size: 0.8rem;
   display: flex;
   align-items: start;
-  height: 9rem;
   text-align: start;
   align-items: start;
+  border-radius: 1rem;
+  border: none;
   color: ${({ theme }) => theme.colors.battleshipGray};
   background-color: ${({ variant, theme }) =>
     variant === 'business'
       ? theme.colors.columbiaBlue
       : theme.colors.antiflashWhite};
-  border: none;
   &:hover {
     cursor: pointer;
   }

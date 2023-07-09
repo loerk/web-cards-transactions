@@ -1,4 +1,5 @@
 import { useTransactions } from '../../context/TransactionContext';
+import { StyledText } from '../styles/Text.styled';
 import { StyledTransaction } from '../styles/Transaction.styled';
 
 type TransactionProps = {
@@ -14,7 +15,9 @@ function Transaction({ amount, description }: TransactionProps) {
 
   return (
     <StyledTransaction variant={variant}>
-      <p>{description}</p>
+      <StyledText width='40rem' overflow='ellipsis'>
+        {description}
+      </StyledText>
       <p>{formattedAmount}€</p>
     </StyledTransaction>
   );

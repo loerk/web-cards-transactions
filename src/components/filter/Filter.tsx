@@ -1,4 +1,4 @@
-import { ChangeEventHandler, Dispatch } from 'react';
+import { ChangeEventHandler } from 'react';
 
 import { StyledInput, StyledLabel } from '../styles/Input.styled';
 import { StyledContainer } from '../styles/Container.styled';
@@ -12,6 +12,7 @@ function Filter() {
   ) => {
     setFilter(e.target.value);
   };
+
   return (
     <StyledContainer size='large' align='start' gap='0'>
       <StyledLabel htmlFor='filter_amount'>Amount Filter</StyledLabel>

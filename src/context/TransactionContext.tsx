@@ -22,7 +22,9 @@ type TransactionContextType = {
   filter: string;
   setFilter: Dispatch<React.SetStateAction<string>>;
   setSelectedCard: (id: string) => void;
+  setTransactions: (updatedTransactions: ITransaction[]) => void;
   loadCardTransactions: (id: string) => void;
+  sortTransactions: (option: string) => void;
 };
 const TransactionContext = createContext<TransactionContextType>(
   {} as TransactionContextType
@@ -36,6 +38,7 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
   });
   const [filter, setFilter] = useState('');
   const { cards, transactions, selectedCard } = transactionData;
+
   const loadCards = async () => {
     try {
       const result = await getCards();
@@ -74,21 +77,44 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
+  const setTransactions = (updatedTransactions: ITransaction[]) => {
+    setTransactionData({
+      ...transactionData,
+      transactions: updatedTransactions,
+    });
+  };
+
+  const sortTransactions = (option: string) => {
+    const sortedTransactions =
+      option === 'increasing'
+        ? transactions.sort((a, b) => a.amount - b.amount)
+        : transactions.sort((a, b) => b.amount - a.amount);
+    setTransactions(sortedTransactions);
+  };
+
   useEffect(() => {
     loadCards();
   }, []);
+
   useEffect(() => {
+    if (!selectedCard.id) {
+      return;
+    }
     loadCardTransactions(selectedCard.id);
   }, [selectedCard]);
+
   const contextValue = {
     cards: cards,
     transactions: transactions,
     selectedCard: selectedCard,
-    setSelectedCard,
     loadCardTransactions,
     filter,
     setFilter,
+    setTransactions,
+    setSelectedCard,
+    sortTransactions,
   };
+
   return (
     <TransactionContext.Provider value={contextValue}>
       {children}

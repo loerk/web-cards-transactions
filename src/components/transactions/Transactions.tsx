@@ -1,13 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { StyledContainer } from '../styles/Container.styled';
 import { StyledTransactions } from '../styles/Transactions.styled';
 import { useTransactions } from '../../context/TransactionContext';
 import Transaction from '../transaction/Transaction';
 import Filter from '../filter/Filter';
+import { StyledIconButton } from '../styles/Button.styled';
+import { ITransaction } from '../../ApiClient';
 
 function Transactions() {
-  const { transactions, selectedCard, filter } = useTransactions();
+  const { transactions, selectedCard, sortTransactions, filter } =
+    useTransactions();
+  const [filteredTransactions, setFilteredTransactions] =
+    useState<ITransaction[]>(transactions);
+
+  const handleSortUp = () => {
+    sortTransactions('increasing');
+  };
+  const handleSortDown = () => {
+    sortTransactions('decreasing');
+  };
+
+  useEffect(() => {
+    if (filter) {
+      const updatedTransactions = transactions.filter(
+        (transaction) => transaction.amount >= Number(filter.replace(',', '.'))
+      );
+      setFilteredTransactions(updatedTransactions);
+    } else {
+      setFilteredTransactions(transactions);
+    }
+  }, [filter]);
 
   if (!selectedCard.id) {
     return (
@@ -17,17 +40,26 @@ function Transactions() {
     );
   }
 
+  const displayedTransactions = filter ? filteredTransactions : transactions;
+
   return (
-    <StyledContainer gap='3' align='center' size='medium'>
+    <StyledContainer align='center' size='medium'>
       <Filter />
+      <StyledContainer
+        style={{ paddingRight: '1rem', marginTop: '1rem' }}
+        align='end'
+        size='large'
+      >
+        <StyledIconButton onClick={handleSortUp}>⬆</StyledIconButton>
+        <StyledIconButton onClick={handleSortDown}>⬇</StyledIconButton>
+      </StyledContainer>
+
       <StyledTransactions gap='0' align='center' size='large'>
-        {transactions.map((transaction) => {
+        {displayedTransactions.map((transaction) => {
           const { id, amount, description } = transaction;
-          if (transaction.amount >= Number(filter.replace(',', '.'))) {
-            return (
-              <Transaction key={id} amount={amount} description={description} />
-            );
-          }
+          return (
+            <Transaction key={id} amount={amount} description={description} />
+          );
         })}
       </StyledTransactions>
     </StyledContainer>

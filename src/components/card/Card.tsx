@@ -8,9 +8,10 @@ type CardProps = {
 
 function Card({ id, description }: CardProps) {
   const variant = description === 'Private Card' ? 'private' : 'business';
-  const { setSelectedCard } = useTransactions();
+  const { setSelectedCard, setFilter } = useTransactions();
 
   const handleClick = () => {
+    setFilter('');
     setSelectedCard(id);
   };
 

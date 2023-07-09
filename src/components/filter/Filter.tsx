@@ -2,16 +2,15 @@ import { ChangeEventHandler, Dispatch } from 'react';
 
 import { StyledInput, StyledLabel } from '../styles/Input.styled';
 import { StyledContainer } from '../styles/Container.styled';
+import { useTransactions } from '../../context/TransactionContext';
 
-type FilterProps = {
-  setAmountFilter: Dispatch<React.SetStateAction<string>>;
-};
+function Filter() {
+  const { setFilter, filter } = useTransactions();
 
-function Filter({ setAmountFilter }: FilterProps) {
   const handleChange: ChangeEventHandler<HTMLInputElement> | undefined = (
     e
   ) => {
-    setAmountFilter(e.target.value);
+    setFilter(e.target.value);
   };
   return (
     <StyledContainer size='large' align='start' gap='0'>
@@ -21,6 +20,7 @@ function Filter({ setAmountFilter }: FilterProps) {
         id='filter_amount'
         placeholder='Amount'
         type='text'
+        value={filter}
       />
     </StyledContainer>
   );

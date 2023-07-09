@@ -7,9 +7,7 @@ import Transaction from '../transaction/Transaction';
 import Filter from '../filter/Filter';
 
 function Transactions() {
-  const [amountFilter, setAmountFilter] = useState('');
-
-  const { transactions, selectedCard } = useTransactions();
+  const { transactions, selectedCard, filter } = useTransactions();
 
   if (!selectedCard.id) {
     return (
@@ -18,30 +16,19 @@ function Transactions() {
       </StyledContainer>
     );
   }
+
   return (
-    <StyledContainer gap='2' align='center' size='medium'>
-      <Filter setAmountFilter={setAmountFilter} />
-      <StyledTransactions gap='2' align='center' size='large'>
-        {!amountFilter &&
-          transactions.map((transaction) => {
-            const { id, amount, description } = transaction;
+    <StyledContainer gap='3' align='center' size='medium'>
+      <Filter />
+      <StyledTransactions gap='0' align='center' size='large'>
+        {transactions.map((transaction) => {
+          const { id, amount, description } = transaction;
+          if (transaction.amount >= Number(filter.replace(',', '.'))) {
             return (
               <Transaction key={id} amount={amount} description={description} />
             );
-          })}
-        {amountFilter &&
-          transactions.map((transaction) => {
-            const { id, amount, description } = transaction;
-            if (amount.toString().startsWith(amountFilter.replace(',', '.'))) {
-              return (
-                <Transaction
-                  key={id}
-                  amount={amount}
-                  description={description}
-                />
-              );
-            }
-          })}
+          }
+        })}
       </StyledTransactions>
     </StyledContainer>
   );

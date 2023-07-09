@@ -1,4 +1,5 @@
 import {
+  Dispatch,
   PropsWithChildren,
   createContext,
   useContext,
@@ -18,6 +19,8 @@ type TransactionContextType = {
   cards: ICard[];
   transactions: ITransaction[];
   selectedCard: ICard;
+  filter: string;
+  setFilter: Dispatch<React.SetStateAction<string>>;
   setSelectedCard: (id: string) => void;
   loadCardTransactions: (id: string) => void;
 };
@@ -31,6 +34,7 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
     transactions: [],
     selectedCard: { description: '', id: '' },
   });
+  const [filter, setFilter] = useState('');
   const { cards, transactions, selectedCard } = transactionData;
   const loadCards = async () => {
     try {
@@ -77,11 +81,13 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
     loadCardTransactions(selectedCard.id);
   }, [selectedCard]);
   const contextValue = {
-    cards: transactionData.cards,
-    transactions: transactionData.transactions,
-    selectedCard: transactionData.selectedCard,
+    cards: cards,
+    transactions: transactions,
+    selectedCard: selectedCard,
     setSelectedCard,
     loadCardTransactions,
+    filter,
+    setFilter,
   };
   return (
     <TransactionContext.Provider value={contextValue}>

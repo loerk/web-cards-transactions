@@ -1,4 +1,4 @@
-import { StyledCard } from '../styles/Card.styled';
+import { StyledCard } from '../common/Card.styled';
 import { useTransactions } from '../../context/TransactionContext';
 
 type CardProps = {
@@ -16,7 +16,7 @@ function Card({ id, description }: CardProps) {
   };
 
   return (
-    <StyledCard onClick={handleClick} variant={variant}>
+    <StyledCard onClick={handleClick} $variant={variant}>
       <div>
         <p>{description}</p>
         <p>{id}</p>

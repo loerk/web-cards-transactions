@@ -1,6 +1,6 @@
 import { useTransactions } from '../../context/TransactionContext';
-import { StyledText } from '../styles/Text.styled';
-import { StyledTransaction } from '../styles/Transaction.styled';
+import { StyledText } from '../common/Text.styled';
+import { StyledTransaction } from './Transaction.styled';
 
 type TransactionProps = {
   amount: number;
@@ -14,7 +14,7 @@ function Transaction({ amount, description }: TransactionProps) {
   const formattedAmount = amount.toString().replace('.', ',');
 
   return (
-    <StyledTransaction variant={variant}>
+    <StyledTransaction $variant={variant}>
       <StyledText width='40rem' overflow='ellipsis'>
         {description}
       </StyledText>

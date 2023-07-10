@@ -5,7 +5,11 @@ interface CardProps {
   isTransaction?: boolean;
 }
 
-export const StyledCard = styled.button<CardProps>`
+interface IconProps {
+  color?: 'red' | 'black';
+}
+
+export const StyledCardButton = styled.button<CardProps>`
   min-width: 14rem;
   height: 8rem;
   padding-top: 0.3rem;
@@ -25,4 +29,11 @@ export const StyledCard = styled.button<CardProps>`
   &:hover {
     cursor: pointer;
   }
+`;
+
+export const StyledIconButton = styled.button<IconProps>`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: ${({ color }) => color};
 `;

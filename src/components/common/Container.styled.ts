@@ -2,16 +2,16 @@ import styled from 'styled-components';
 
 interface ContainerProps {
   size: 'small' | 'medium' | 'large';
-  align: 'start' | 'center' | 'space-between' | 'end';
-  gap?: string;
+  $align: 'start' | 'center' | 'space-between' | 'end';
+  $gap?: string;
 }
 
 export const StyledContainer = styled.div<ContainerProps>`
   width: 100%;
   display: flex;
-  gap: ${({ gap }) => (gap ? gap : '0')}rem;
+  gap: ${({ $gap }) => ($gap ? $gap : '0')}rem;
   flex-wrap: wrap;
-  justify-content: ${({ align }) => align};
+  justify-content: ${({ $align }) => $align};
   align-items: center;
   ${({ size }) =>
     size === 'medium' &&

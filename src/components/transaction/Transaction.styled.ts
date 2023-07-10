@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledCard } from './Card.styled';
+import { StyledCard } from '../common/Card.styled';
 
 export const StyledTransaction = styled(StyledCard)`
   width: 100%;

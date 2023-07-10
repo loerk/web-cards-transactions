@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledContainer } from './Container.styled';
+import { StyledContainer } from '../common/Container.styled';
 
 export const StyledTransactions = styled(StyledContainer)`
   min-width: 15rem;

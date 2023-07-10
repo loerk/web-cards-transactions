@@ -1,61 +1,62 @@
-import { useEffect, useState } from 'react';
-
-import { StyledContainer } from '../styles/Container.styled';
-import { StyledTransactions } from '../styles/Transactions.styled';
+import { StyledContainer } from '../common/Container.styled';
+import { StyledTransactions } from './Transactions.styled';
 import { useTransactions } from '../../context/TransactionContext';
+import { StyledIconButton } from '../common/Button.styled';
 import Transaction from '../transaction/Transaction';
 import Filter from '../filter/Filter';
-import { StyledIconButton } from '../styles/Button.styled';
-import { ITransaction } from '../../ApiClient';
 
 function Transactions() {
-  const { transactions, selectedCard, sortTransactions, filter } =
+  const { transactions, sortMode, setSortMode, selectedCard } =
     useTransactions();
-  const [filteredTransactions, setFilteredTransactions] =
-    useState<ITransaction[]>(transactions);
 
-  const handleSortUp = () => {
-    sortTransactions('increasing');
+  const handleSortAsc = () => {
+    setSortMode('asc');
   };
-  const handleSortDown = () => {
-    sortTransactions('decreasing');
+  const handleSortDesc = () => {
+    setSortMode('desc');
   };
-
-  useEffect(() => {
-    if (filter) {
-      const updatedTransactions = transactions.filter(
-        (transaction) => transaction.amount >= Number(filter.replace(',', '.'))
-      );
-      setFilteredTransactions(updatedTransactions);
-    } else {
-      setFilteredTransactions(transactions);
-    }
-  }, [filter]);
+  const handleSortReset = () => {
+    setSortMode(null);
+  };
 
   if (!selectedCard.id) {
     return (
-      <StyledContainer align='center' gap='2' size='medium'>
+      <StyledContainer $align='center' $gap='2' size='medium'>
         <p>Please select a card</p>
       </StyledContainer>
     );
   }
 
-  const displayedTransactions = filter ? filteredTransactions : transactions;
-
   return (
-    <StyledContainer align='center' size='medium'>
+    <StyledContainer $align='center' size='medium'>
       <Filter />
       <StyledContainer
         style={{ paddingRight: '1rem', marginTop: '1rem' }}
-        align='end'
+        $align='end'
         size='large'
       >
-        <StyledIconButton onClick={handleSortUp}>⬆</StyledIconButton>
-        <StyledIconButton onClick={handleSortDown}>⬇</StyledIconButton>
+        <StyledIconButton
+          color={sortMode === 'asc' ? 'red' : 'black'}
+          onClick={handleSortAsc}
+        >
+          ⬆
+        </StyledIconButton>
+        <StyledIconButton
+          color={sortMode === 'desc' ? 'red' : 'black'}
+          onClick={handleSortDesc}
+        >
+          ⬇
+        </StyledIconButton>
+        <StyledIconButton
+          style={{ marginLeft: '.5rem' }}
+          onClick={handleSortReset}
+        >
+          X
+        </StyledIconButton>
       </StyledContainer>
 
-      <StyledTransactions gap='0' align='center' size='large'>
-        {displayedTransactions.map((transaction) => {
+      <StyledTransactions $gap='0' $align='center' size='large'>
+        {transactions.map((transaction) => {
           const { id, amount, description } = transaction;
           return (
             <Transaction key={id} amount={amount} description={description} />

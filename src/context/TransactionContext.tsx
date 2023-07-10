@@ -1,6 +1,7 @@
 import {
   Dispatch,
   PropsWithChildren,
+  SetStateAction,
   createContext,
   useContext,
   useEffect,
@@ -20,11 +21,11 @@ type TransactionContextType = {
   transactions: ITransaction[];
   selectedCard: ICard;
   filter: string;
-  setFilter: Dispatch<React.SetStateAction<string>>;
+  setFilter: Dispatch<SetStateAction<string>>;
   setSelectedCard: (id: string) => void;
-  setTransactions: (updatedTransactions: ITransaction[]) => void;
   loadCardTransactions: (id: string) => void;
-  sortTransactions: (option: string) => void;
+  setSortMode: Dispatch<SetStateAction<'asc' | 'desc' | null>>;
+  sortMode: 'asc' | 'desc' | null;
 };
 const TransactionContext = createContext<TransactionContextType>(
   {} as TransactionContextType
@@ -37,6 +38,7 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
     selectedCard: { description: '', id: '' },
   });
   const [filter, setFilter] = useState('');
+  const [sortMode, setSortMode] = useState<'asc' | 'desc' | null>(null);
   const { cards, transactions, selectedCard } = transactionData;
 
   const loadCards = async () => {
@@ -77,21 +79,22 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
-  const setTransactions = (updatedTransactions: ITransaction[]) => {
-    setTransactionData({
-      ...transactionData,
-      transactions: updatedTransactions,
-    });
+  const getSortedAndFilteredTransactions = () => {
+    return transactions
+      .filter(
+        (transaction) =>
+          !filter || transaction.amount >= Number(filter.replace(',', '.'))
+      )
+      .sort((a, b) => {
+        if (!sortMode) {
+          return 0;
+        }
+        if (sortMode === 'asc') {
+          return a.amount - b.amount;
+        }
+        return b.amount - a.amount;
+      });
   };
-
-  const sortTransactions = (option: string) => {
-    const sortedTransactions =
-      option === 'increasing'
-        ? transactions.sort((a, b) => a.amount - b.amount)
-        : transactions.sort((a, b) => b.amount - a.amount);
-    setTransactions(sortedTransactions);
-  };
-
   useEffect(() => {
     loadCards();
   }, []);
@@ -104,15 +107,15 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
   }, [selectedCard]);
 
   const contextValue = {
-    cards: cards,
-    transactions: transactions,
-    selectedCard: selectedCard,
+    cards,
+    transactions: getSortedAndFilteredTransactions(),
+    selectedCard,
     loadCardTransactions,
     filter,
     setFilter,
-    setTransactions,
     setSelectedCard,
-    sortTransactions,
+    setSortMode,
+    sortMode,
   };
 
   return (

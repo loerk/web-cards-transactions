@@ -2,21 +2,7 @@
   "lkmfkl-mlfkm-dlkfm": [
     { "id": "lkmlk-5kkm5-55gg", "amount": 123.88, "description": "Food" },
     { "id": "43mm3-lkm4-55gg", "amount": 33.48, "description": "Snack" },
-    { "id": "eefe-5kkm5-ffeefe", "amount": 288.38, "description": "Tickets" },
-    {
-      "id": "lkmlk-5kkm5-55gg1",
-      "amount": 123.88,
-      "description": "Food for everyone i know"
-    },
-    {
-      "id": "43mm3-lkm4-55gg2",
-      "amount": 3.48,
-      "description": "Snackisnacksnackisnack"
-    },
-    { "id": "eefe-5kkm5-ffeefe3", "amount": 28.38, "description": "Tickets" },
-    { "id": "lkmlk-5kkm5-55gg4", "amount": 124.88, "description": "Food" },
-    { "id": "43mm3-lkm4-55gg5", "amount": 338.48, "description": "Snack" },
-    { "id": "eefe-5kkm5-ffeefe6", "amount": 2889.38, "description": "Tickets" }
+    { "id": "eefe-5kkm5-ffeefe", "amount": 288.38, "description": "Tickets" }
   ],
   "elek-n3lk-4m3lk4": [
     { "id": "lkmlk-5kkm5-55gg", "amount": 21.88, "description": "T-Shirt" },
@@ -29,24 +15,13 @@
     { "id": "lkmlk-5kkm5-55gg1", "amount": 21.88, "description": "T-Shirt" },
     {
       "id": "43mm3-lkm4-55gg2",
-      "amount": 533.48,
+      "amount": 5339.48,
       "description": "Smart Phone for me and the rest of my family"
     },
     {
       "id": "eefe-5kkm5-ffeefe3",
-      "amount": 2.58,
+      "amount": 245.58,
       "description": "Chocolate Bar and a lot more because i was soo hungry"
-    },
-    { "id": "lkmlk-5kkm5-55gg4", "amount": 21.88, "description": "T-Shirt" },
-    {
-      "id": "43mm3-lkm4-55gg5",
-      "amount": 533.48,
-      "description": "Smart Phone"
-    },
-    {
-      "id": "eefe-5kkm5-ffeefe6",
-      "amount": 2.58,
-      "description": "Chocolate Bar"
     }
   ]
 }

@@ -6,7 +6,7 @@ import Transaction from '../transaction/Transaction';
 import Filter from '../filter/Filter';
 
 function Transactions() {
-  const { transactions, sortMode, setSortMode, selectedCard } =
+  const { loadingState, transactions, sortMode, setSortMode, selectedCard } =
     useTransactions();
 
   const handleSortAsc = () => {
@@ -19,6 +19,16 @@ function Transactions() {
     setSortMode(null);
   };
 
+  if (loadingState.cards.error) {
+    return;
+  }
+  if (loadingState.transactions.error) {
+    return (
+      <StyledContainer $align='center' $gap='2' size='medium'>
+        <p>{loadingState.transactions.error}</p>
+      </StyledContainer>
+    );
+  }
   if (!selectedCard.id) {
     return (
       <StyledContainer $align='center' $gap='2' size='medium'>

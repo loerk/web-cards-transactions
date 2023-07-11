@@ -15,6 +15,10 @@ type TransactionsDataType = {
   transactions: ITransaction[];
   selectedCard: ICard;
 };
+type LoadingState = {
+  loading: boolean;
+  error: string;
+};
 
 type TransactionContextType = {
   cards: ICard[];
@@ -26,6 +30,7 @@ type TransactionContextType = {
   loadCardTransactions: (id: string) => void;
   setSortMode: Dispatch<SetStateAction<'asc' | 'desc' | null>>;
   sortMode: 'asc' | 'desc' | null;
+  loadingState: { cards: LoadingState; transactions: LoadingState };
 };
 const TransactionContext = createContext<TransactionContextType>(
   {} as TransactionContextType
@@ -39,17 +44,26 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
   });
   const [filter, setFilter] = useState('');
   const [sortMode, setSortMode] = useState<'asc' | 'desc' | null>(null);
+  const [cardsLoadingState, setCardsLoadingState] = useState({
+    loading: false,
+    error: '',
+  });
+  const [transactionsLoadingState, setTransactionsLoadingState] = useState({
+    loading: false,
+    error: '',
+  });
+
   const { cards, transactions, selectedCard } = transactionData;
 
   const loadCards = async () => {
     try {
       const result = await getCards();
       if (!result) {
-        return;
+        throw new Error('something went wrong while loading cards');
       }
       setTransactionData({ ...transactionData, cards: result });
     } catch (error) {
-      console.log(error);
+      setCardsLoadingState({ ...cardsLoadingState, error: error as string });
     }
   };
 
@@ -57,14 +71,17 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
     try {
       const result = await getTransactions(cardId);
       if (!result) {
-        return;
+        throw new Error('something went wrong while loading transactions');
       }
       setTransactionData({
         ...transactionData,
         transactions: result,
       });
     } catch (error) {
-      console.log(error);
+      setTransactionsLoadingState({
+        ...transactionsLoadingState,
+        error: error as string,
+      });
     }
   };
 
@@ -116,6 +133,10 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
     setSelectedCard,
     setSortMode,
     sortMode,
+    loadingState: {
+      cards: cardsLoadingState,
+      transactions: transactionsLoadingState,
+    },
   };
 
   return (

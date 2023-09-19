@@ -5,7 +5,8 @@ import Transactions from '../components/transactions/Transactions';
 function CardsDashboard() {
   return (
     <StyledContainer
-      style={{ marginTop: '10rem', marginBottom: '15rem' }}
+      $marginTop='10rem'
+      $marginBottom='15rem'
       $align='center'
       size='large'
       $gap='2'

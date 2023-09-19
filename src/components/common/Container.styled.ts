@@ -4,6 +4,8 @@ interface ContainerProps {
   size: 'small' | 'medium' | 'large';
   $align: 'start' | 'center' | 'space-between' | 'end';
   $gap?: string;
+  $marginTop?: string;
+  $marginBottom?: string;
 }
 
 export const StyledContainer = styled.div<ContainerProps>`

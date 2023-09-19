@@ -9,12 +9,14 @@ import {
 } from 'react';
 
 import { ICard, ITransaction, getCards, getTransactions } from '../ApiClient';
+import { getSortedAndFilteredTransactions } from '../utils/hooks/filterAndSort';
 
 type TransactionsDataType = {
   cards: ICard[];
   transactions: ITransaction[];
   selectedCard: ICard;
 };
+
 type LoadingState = {
   loading: boolean;
   error: string;
@@ -61,7 +63,11 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
       if (!result) {
         throw new Error('something went wrong while loading cards');
       }
-      setTransactionData({ ...transactionData, cards: result });
+      setTransactionData({
+        ...transactionData,
+        cards: result,
+        selectedCard: result[0],
+      });
     } catch (error) {
       setCardsLoadingState({ ...cardsLoadingState, error: error as string });
     }
@@ -96,22 +102,6 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
-  const getSortedAndFilteredTransactions = () => {
-    return transactions
-      .filter(
-        (transaction) =>
-          !filter || transaction.amount >= Number(filter.replace(',', '.'))
-      )
-      .sort((a, b) => {
-        if (!sortMode) {
-          return 0;
-        }
-        if (sortMode === 'asc') {
-          return a.amount - b.amount;
-        }
-        return b.amount - a.amount;
-      });
-  };
   useEffect(() => {
     loadCards();
   }, []);
@@ -120,12 +110,17 @@ export const TransactionContextProvider = ({ children }: PropsWithChildren) => {
     if (!selectedCard.id) {
       return;
     }
+
     loadCardTransactions(selectedCard.id);
   }, [selectedCard]);
 
   const contextValue = {
     cards,
-    transactions: getSortedAndFilteredTransactions(),
+    transactions: getSortedAndFilteredTransactions(
+      transactions,
+      sortMode,
+      filter
+    ),
     selectedCard,
     loadCardTransactions,
     filter,

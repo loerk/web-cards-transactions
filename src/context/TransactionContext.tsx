@@ -9,7 +9,7 @@ import {
 } from 'react';
 
 import { ICard, ITransaction, getCards, getTransactions } from '../ApiClient';
-import { getSortedAndFilteredTransactions } from '../utils/hooks/filterAndSort';
+import { getSortedAndFilteredTransactions } from '../utils/helpers/filterAndSort';
 
 type TransactionsDataType = {
   cards: ICard[];
